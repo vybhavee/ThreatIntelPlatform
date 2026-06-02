@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Threat Intelligence Dashboard</title>
+    <style>
+        body { font-family: Arial; background: #0a0a0a; color: #00ff41; padding: 20px; }
+        h1 { color: #ff4444; text-align: center; }
+        .stats { display: flex; gap: 20px; margin: 20px 0; }
+        .card { background: #111; border: 1px solid #00ff41; padding: 20px; 
+                border-radius: 8px; flex: 1; text-align: center; }
+        .card h2 { font-size: 2em; margin: 0; color: #00ff41; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th { background: #ff4444; color: white; padding: 10px; }
+        td { border: 1px solid #333; padding: 8px; color: #ccc; }
+        tr:hover { background: #1a1a1a; }
+        .blocked { color: #ff4444; font-weight: bold; }
+        .active { color: #ffaa00; font-weight: bold; }
+        .refresh { background: #ff4444; color: white; border: none; 
+                   padding: 10px 20px; cursor: pointer; border-radius: 4px; 
+                   float: right; font-size: 14px; }
+    </style>
+    <meta http-equiv="refresh" content="30">
+</head>
+<body>
+    <h1>🛡️ Threat Intelligence Platform - Finance & Banking</h1>
+    <button class="refresh" onclick="location.reload()">🔄 Refresh</button>
+
+    <div class="stats">
+        <div class="card">
+            <p>Total Threats</p>
+            <h2>{{ total }}</h2>
+        </div>
+        <div class="card">
+            <p>Blocked IPs</p>
+            <h2 style="color:#ff4444">{{ blocked }}</h2>
+        </div>
+        <div class="card">
+            <p>Active Threats</p>
+            <h2 style="color:#ffaa00">{{ active }}</h2>
+        </div>
+        <div class="card">
+            <p>Data Sources</p>
+            <h2>3</h2>
+        </div>
+    </div>
+
+    <h2>📋 Latest Threat Indicators</h2>
+    <table>
+        <tr>
+            <th>IP Address</th>
+            <th>Source Feed</th>
+            <th>Risk Score</th>
+            <th>Status</th>
+            <th>Timestamp</th>
+        </tr>
+        {% for t in threats %}
+        <tr>
+            <td>{{ t.ip }}</td>
+            <td>{{ t.source }}</td>
+            <td>{{ t.risk_score }}</td>
+            <td class="{{ 'blocked' if t.blocked else 'active' }}">
+                {{ '🔴 BLOCKED' if t.blocked else '🟡 ACTIVE' }}
+            </td>
+            <td>{{ t.timestamp }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
